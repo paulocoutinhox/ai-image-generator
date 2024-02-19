@@ -1,0 +1,7 @@
+torch
+accelerate
+transformers
+torchvision
+psutil
+peft
+diffusers @ git+https://github.com/EtienneDosSantos/diffusers.git@wuerstchen-v3
