@@ -2,8 +2,6 @@
 
 Some Python applications that demonstrate how to generate or manage images using Artificial Intelligence (Ai).
 
-[![Build](https://github.com/paulocoutinhox/ai-image-generator/actions/workflows/build.yml/badge.svg)](https://github.com/paulocoutinhox/ai-image-generator/actions/workflows/build.yml)
-
 ## Results - TXT TO IMG
 
 <a href="output-txt2img.png" target="_blank" rel="noopener noreferrer">
