@@ -1,34 +1,28 @@
 import torch
 from diffusers import StableCascadeDecoderPipeline, StableCascadePriorPipeline
 
-from modules import platform as p
-
 # ref
 # https://huggingface.co/stabilityai/stable-cascade
 
 # torch
-torch_device = (
-    torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-)
+torch_device = torch.device("cpu")
+if torch.backends.mps.is_available() and torch.backends.mps.is_built():
+    torch_device = torch.device("mps")
+if torch.cuda.is_available():
+    torch_device = torch.device("cuda")
 
-dtype = torch.bfloat16
-
-if p.is_mac_arm():
-    # BFloat16 is not supported on MPS
-    torch_device = "mps"
-    dtype = None
+dtype = torch.bfloat16 if torch_device.type == "cpu" else torch.float
 
 # model
 prior = StableCascadePriorPipeline.from_pretrained(
     "stabilityai/stable-cascade-prior",
-    use_safetensors=True,
     torch_dtype=dtype,
 ).to(torch_device)
 
 decoder = StableCascadeDecoderPipeline.from_pretrained(
     "stabilityai/stable-cascade",
     use_safetensors=True,
-    torch_dtype=dtype,
+    torch_dtype=torch.half,
 ).to(torch_device)
 
 model_cpu_offload = False

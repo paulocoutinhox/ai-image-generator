@@ -8,17 +8,14 @@ from modules import platform as p
 # https://huggingface.co/docs/diffusers/api/pipelines/stable_diffusion/upscale
 
 # torch
-torch_device = (
-    torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-)
+torch_device = torch.device("cpu")
+if torch.backends.mps.is_available() and torch.backends.mps.is_built():
+    torch_device = torch.device("mps")
+if torch.cuda.is_available():
+    torch_device = torch.device("cuda")
 
-dtype = torch.bfloat16
+dtype = torch.bfloat16 if torch_device.type == "cpu" else torch.float
 revision = "fp16"
-
-if p.is_mac_arm():
-    # BFloat16 is not supported on MPS
-    torch_device = "mps"
-    dtype = None
 
 # model
 sd_model_path = "stabilityai/stable-diffusion-x4-upscaler"

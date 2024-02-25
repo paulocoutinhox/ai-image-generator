@@ -17,12 +17,11 @@ def prepare_image(img_url):
 
 def remove_background(image):
     # torch
-    torch_device = (
-        torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-    )
-
-    if p.is_mac_arm():
-        torch_device = "mps"
+    torch_device = torch.device("cpu")
+    if torch.backends.mps.is_available() and torch.backends.mps.is_built():
+        torch_device = torch.device("mps")
+    if torch.cuda.is_available():
+        torch_device = torch.device("cuda")
 
     net = BriaRMBG()
     model_path = hf_hub_download("briaai/RMBG-1.4", "model.pth")
