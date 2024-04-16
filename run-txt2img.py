@@ -8,8 +8,10 @@ from modules import platform as p
 
 # torch
 torch_device = torch.device("cpu")
+
 if torch.backends.mps.is_available() and torch.backends.mps.is_built():
     torch_device = torch.device("mps")
+
 if torch.cuda.is_available():
     torch_device = torch.device("cuda")
 
